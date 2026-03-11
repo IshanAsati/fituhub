@@ -1,0 +1,115 @@
+export type ChallengeCategory = 'student' | 'fitness' | 'creator'
+
+export interface Challenge {
+  text: string
+  category: ChallengeCategory
+}
+
+export const challenges: Challenge[] = [
+  // Student Mode (40)
+  { text: 'Solve 5 math problems', category: 'student' },
+  { text: 'Read 10 pages of your textbook', category: 'student' },
+  { text: 'Revise yesterday\'s notes', category: 'student' },
+  { text: 'Write a one-page summary of a topic', category: 'student' },
+  { text: 'Memorize 10 key terms', category: 'student' },
+  { text: 'Watch one full lecture', category: 'student' },
+  { text: 'Solve one difficult question from your syllabus', category: 'student' },
+  { text: 'Review mistakes from your last test', category: 'student' },
+  { text: 'Practice mental math for 10 minutes', category: 'student' },
+  { text: 'Study without your phone for 25 minutes', category: 'student' },
+  { text: 'Organize your notes for one subject', category: 'student' },
+  { text: 'Review your flashcards', category: 'student' },
+  { text: 'Practice drawing diagrams from memory', category: 'student' },
+  { text: 'Revise one full chapter', category: 'student' },
+  { text: 'Do 3 previous exam questions', category: 'student' },
+  { text: 'Practice writing structured answers', category: 'student' },
+  { text: 'Solve a past paper question', category: 'student' },
+  { text: 'Review your class notes from today', category: 'student' },
+  { text: 'Rewrite your messiest notes neatly', category: 'student' },
+  { text: 'Study one topic deeply for 30 minutes', category: 'student' },
+  { text: 'Teach a topic out loud to yourself', category: 'student' },
+  { text: 'Create flashcards for a topic', category: 'student' },
+  { text: 'Study using the Pomodoro technique', category: 'student' },
+  { text: 'Read the textbook explanation for a confusing concept', category: 'student' },
+  { text: 'Practice formulas without looking at notes', category: 'student' },
+  { text: 'Revise key definitions for a subject', category: 'student' },
+  { text: 'Solve a set of challenge problems', category: 'student' },
+  { text: 'Review your homework for errors', category: 'student' },
+  { text: 'Study with a timer — beat your record', category: 'student' },
+  { text: 'Practice explaining a concept out loud', category: 'student' },
+  { text: 'Revise diagrams for a science topic', category: 'student' },
+  { text: 'Practice equations until fluent', category: 'student' },
+  { text: 'Write summary notes for a chapter', category: 'student' },
+  { text: 'Highlight and annotate key ideas in your notes', category: 'student' },
+  { text: 'Study for 20 minutes with no music', category: 'student' },
+  { text: 'Revise your weakest topic', category: 'student' },
+  { text: 'Solve textbook end-of-chapter questions', category: 'student' },
+  { text: 'Practice writing concise short answers', category: 'student' },
+  { text: 'Study uninterrupted for 20 minutes', category: 'student' },
+  { text: 'Read the chapter summary', category: 'student' },
+
+  // Fitness Mode (25)
+  { text: 'Do 20 pushups', category: 'fitness' },
+  { text: 'Do 30 squats', category: 'fitness' },
+  { text: 'Do 15 sit-ups', category: 'fitness' },
+  { text: 'Go for a 10-minute walk', category: 'fitness' },
+  { text: 'Hold a 1-minute plank', category: 'fitness' },
+  { text: 'Stretch for 5 minutes', category: 'fitness' },
+  { text: 'Do 20 jumping jacks', category: 'fitness' },
+  { text: 'Do 10 pushups', category: 'fitness' },
+  { text: 'Wall sit for 30 seconds', category: 'fitness' },
+  { text: 'Jog in place for 2 minutes', category: 'fitness' },
+  { text: 'Stretch your neck and shoulders', category: 'fitness' },
+  { text: 'Do 15 lunges per leg', category: 'fitness' },
+  { text: 'Hold a 30-second plank', category: 'fitness' },
+  { text: 'Do 10 burpees', category: 'fitness' },
+  { text: 'Take a 10-minute brisk walk', category: 'fitness' },
+  { text: 'Do a basic full-body stretching routine', category: 'fitness' },
+  { text: 'Do 20 squats', category: 'fitness' },
+  { text: 'Follow a quick yoga routine', category: 'fitness' },
+  { text: 'Do a balance exercise for 1 minute', category: 'fitness' },
+  { text: 'Complete a 5-minute core workout', category: 'fitness' },
+  { text: 'Do 20 calf raises', category: 'fitness' },
+  { text: 'Do 25 jumping jacks', category: 'fitness' },
+  { text: 'Do as many pushups as you can', category: 'fitness' },
+  { text: 'Plank challenge — beat your previous record', category: 'fitness' },
+  { text: 'Do a 5-minute deep breathing exercise', category: 'fitness' },
+
+  // Creator Mode (25)
+  { text: 'Write 200 words on any topic', category: 'creator' },
+  { text: 'Sketch something around you', category: 'creator' },
+  { text: 'Brainstorm 10 startup ideas', category: 'creator' },
+  { text: 'Write a tweet thread about something you learned', category: 'creator' },
+  { text: 'Design a logo idea on paper', category: 'creator' },
+  { text: 'Journal for 5 minutes', category: 'creator' },
+  { text: 'Build a mini feature for a side project', category: 'creator' },
+  { text: 'Write a blog post outline', category: 'creator' },
+  { text: 'Create a UI sketch for an app idea', category: 'creator' },
+  { text: 'Write code for 15 minutes straight', category: 'creator' },
+  { text: 'Learn one new keyboard shortcut in your IDE', category: 'creator' },
+  { text: 'Research an interesting startup', category: 'creator' },
+  { text: 'Improve one thing in a project', category: 'creator' },
+  { text: 'Create a small script or automation', category: 'creator' },
+  { text: 'Write a creative paragraph or short story', category: 'creator' },
+  { text: 'Plan out a product idea', category: 'creator' },
+  { text: 'Write your goals for the next 7 days', category: 'creator' },
+  { text: 'Think of 3 new ideas — write them down', category: 'creator' },
+  { text: 'Add one thing to your portfolio', category: 'creator' },
+  { text: 'Design a UI component (Figma or paper)', category: 'creator' },
+  { text: 'Read a tech or design article', category: 'creator' },
+  { text: 'Write a one-page product concept', category: 'creator' },
+  { text: 'Study design inspiration for 10 minutes', category: 'creator' },
+  { text: 'Code a small useful tool', category: 'creator' },
+  { text: 'Write a daily reflection', category: 'creator' },
+]
+
+export function getRandomChallenge(category?: ChallengeCategory): Challenge {
+  const pool = category ? challenges.filter(c => c.category === category) : challenges
+  return pool[Math.floor(Math.random() * pool.length)]
+}
+
+export const categoryConfig = {
+  student: { label: 'Student Mode', emoji: '📚', color: 'from-violet-500 to-purple-600' },
+  fitness: { label: 'Fitness Mode', emoji: '💪', color: 'from-emerald-500 to-green-600' },
+  creator: { label: 'Creator Mode', emoji: '🎨', color: 'from-orange-500 to-amber-600' },
+}
