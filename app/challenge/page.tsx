@@ -3,8 +3,10 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { challenges, getRandomChallenge, categoryConfig, type ChallengeCategory } from '@/lib/challenge-data'
-import { createClient } from '@/lib/supabase/client'
+import { saveChallenge } from '@/lib/local-storage'
 import confetti from 'canvas-confetti'
+
+const SUPABASE_READY = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 const categories: ChallengeCategory[] = ['student', 'fitness', 'creator']
 
@@ -53,52 +55,57 @@ export default function ChallengePage() {
       })
     }
 
-    // Save to Supabase
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      await supabase.from('challenges_completed').insert({
-        user_id: user.id,
-        challenge_text: current.text,
-        category: current.category,
-      })
+    // Save to localStorage (works always — no Supabase needed)
+    saveChallenge({ challenge_text: current.text, category: current.category })
 
-      // Update streak
-      const { data: streak } = await supabase
-        .from('streaks')
-        .select('*')
-        .eq('user_id', user.id)
-        .single()
-
-      const today = new Date().toISOString().split('T')[0]
-      if (streak) {
-        const last = streak.last_activity_date
-        const yesterday = new Date()
-        yesterday.setDate(yesterday.getDate() - 1)
-        const yesterdayStr = yesterday.toISOString().split('T')[0]
-
-        const newStreak =
-          last === today
-            ? streak.current_streak
-            : last === yesterdayStr
-            ? streak.current_streak + 1
-            : 1
-
-        await supabase.from('streaks').update({
-          current_streak: newStreak,
-          longest_streak: Math.max(streak.longest_streak, newStreak),
-          last_activity_date: today,
-          total_completed: streak.total_completed + 1,
-          updated_at: new Date().toISOString(),
-        }).eq('user_id', user.id)
-      } else {
-        await supabase.from('streaks').insert({
+    // Also save to Supabase if configured
+    if (SUPABASE_READY) {
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('challenges_completed').insert({
           user_id: user.id,
-          current_streak: 1,
-          longest_streak: 1,
-          last_activity_date: today,
-          total_completed: 1,
+          challenge_text: current.text,
+          category: current.category,
         })
+
+        const { data: streak } = await supabase
+          .from('streaks')
+          .select('*')
+          .eq('user_id', user.id)
+          .single()
+
+        const today = new Date().toISOString().split('T')[0]
+        if (streak) {
+          const last = streak.last_activity_date
+          const yesterday = new Date()
+          yesterday.setDate(yesterday.getDate() - 1)
+          const yesterdayStr = yesterday.toISOString().split('T')[0]
+
+          const newStreak =
+            last === today
+              ? streak.current_streak
+              : last === yesterdayStr
+              ? streak.current_streak + 1
+              : 1
+
+          await supabase.from('streaks').update({
+            current_streak: newStreak,
+            longest_streak: Math.max(streak.longest_streak, newStreak),
+            last_activity_date: today,
+            total_completed: streak.total_completed + 1,
+            updated_at: new Date().toISOString(),
+          }).eq('user_id', user.id)
+        } else {
+          await supabase.from('streaks').insert({
+            user_id: user.id,
+            current_streak: 1,
+            longest_streak: 1,
+            last_activity_date: today,
+            total_completed: 1,
+          })
+        }
       }
     }
   }

@@ -4,8 +4,10 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { quizQuestions, calculateResult, type QuizResultData } from '@/lib/quiz-data'
 import ProgressBar from '@/components/ui/ProgressBar'
-import { createClient } from '@/lib/supabase/client'
+import { saveQuizResult } from '@/lib/local-storage'
 import Link from 'next/link'
+
+const SUPABASE_READY = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
 
 type Phase = 'intro' | 'quiz' | 'result'
 
@@ -39,18 +41,32 @@ export default function QuizPage() {
 
   async function saveResult(ans: number[], res: QuizResultData) {
     setSaving(true)
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      await supabase.from('quiz_results').insert({
-        user_id: user.id,
-        score: res.score,
-        status: res.status,
-        focus_level: res.focusLevel,
-        discipline_level: res.disciplineLevel,
-        distraction_level: res.distractionLevel,
-        answers: ans,
-      })
+    // Save to localStorage always (works in demo mode)
+    saveQuizResult({
+      score: res.score,
+      status: res.status,
+      focus_level: res.focusLevel,
+      discipline_level: res.disciplineLevel,
+      distraction_level: res.distractionLevel,
+      answers: ans,
+    })
+
+    // Also save to Supabase if configured
+    if (SUPABASE_READY) {
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('quiz_results').insert({
+          user_id: user.id,
+          score: res.score,
+          status: res.status,
+          focus_level: res.focusLevel,
+          discipline_level: res.disciplineLevel,
+          distraction_level: res.distractionLevel,
+          answers: ans,
+        })
+      }
     }
     setSaving(false)
   }
